@@ -9,8 +9,6 @@ timbot_user_id = os.environ['SLACK_TIMBOT_USER_ID']
 
 sc = SlackClient(slack_token)
 
-random.seed(datetime.datetime.now())
-
 alert = True
 ideal_lunch_time = "11:30"
 friday_index_elem = 4
@@ -62,6 +60,8 @@ def run_timbot():
 
 						#if friday
 						if datetime.datetime.today().weekday() == friday_index_elem:
+							random.seed(datetime.datetime.now())
+
 							#choose place to go
 							places = ['pauls','moes','asian plus','99s']
 							sc.api_call("chat.postMessage", channel=channel_name, text=random.choice(places), as_user=True)
