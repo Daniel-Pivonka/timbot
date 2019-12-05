@@ -1,6 +1,7 @@
 import os
 from slackclient import SlackClient
 import random
+import datetime
 
 
 slack_token = os.environ['SLACK_API_TOKEN']
@@ -25,8 +26,11 @@ while True:
 					#check what the message is
 					if 'lunch' in message and 'where' in message:
 						#send a message as timbot
-						places = ['pauls','moes','asian plus','99s']
-						sc.api_call("chat.postMessage", channel=channel_name, text=random.choice(places), as_user=True)
+						if datetime.datetime.today().weekday() == 4:
+							places = ['pauls','moes','asian plus','99s']
+							sc.api_call("chat.postMessage", channel=channel_name, text=random.choice(places), as_user=True)
+						else:
+							sc.api_call("chat.postMessage", channel=channel_name, text='epicurean feast', as_user=True)
 					elif 'lunch' in message and ('time' in message or 'when' in message):
 						#send a message as timbot
 						sc.api_call("chat.postMessage", channel=channel_name, text="11:30", as_user=True)
