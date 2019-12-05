@@ -3,7 +3,6 @@ from slackclient import SlackClient
 import random
 import datetime
 
-
 slack_token = os.environ['SLACK_API_TOKEN']
 channel_name = os.environ['SLACK_CHANNEL_NAME']
 timbot_user_id = os.environ['SLACK_TIMBOT_USER_ID']
@@ -16,17 +15,26 @@ alert = True
 ideal_lunch_time = "11:30"
 friday_index_elem = 4
 
-while True:
-	history = sc.api_call("groups.history", channel=channel_name, count=1)
+if __name__ == '__main__':
+	main()
 
-	#lunch alert
-	time = datetime.datetime.now().strftime('%H:%M')
-	if time == ideal_lunch_time:
-		if alert:
-			sc.api_call("chat.postMessage", channel=channel_name, text='IT IS THE IDEAL LUNCH TIME GO TO LUNCH', as_user=True)
-			alert = False
+
+def main():
+	while True:
+		run_timbot()
+
+
+def handle_ideal_lunch_time(curr_time):
+	if curr_time == ideal_lunch_time and alert:
+		sc.api_call("chat.postMessage", channel=channel_name, text='IT IS THE IDEAL LUNCH TIME GO TO LUNCH', as_user=True)
+		alert = False
 	else:
 		alert = True
+
+def run_timbot():
+	history = sc.api_call("groups.history", channel=channel_name, count=1)
+
+	handle_ideal_lunch_time(datetime.datetime.now().strftime('%H:%M'))
 
 	# look for a message in the chat that starts with '@timbot .....'
 	if 'messages' in history:
@@ -73,4 +81,3 @@ while True:
 					#base response
 					else:
 						sc.api_call("chat.postMessage", channel=channel_name, text="keep pounding", as_user=True)
-
