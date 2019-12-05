@@ -39,6 +39,10 @@ while True:
 				if 'openstack' in message:
 					sc.api_call("chat.postMessage", channel=channel_name, text='i hear opensack is a career killer', as_user=True)
 
+				#pong responce
+				elif 'pong' in message:
+					sc.api_call("chat.postMessage", channel=channel_name, text='im in. best 2 out of 3 games to 7?', as_user=True)
+
 
 				if message.startswith(timbot_user_id):
 
