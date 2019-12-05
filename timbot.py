@@ -18,6 +18,11 @@ while True:
 			if 'text' in message:
 				message = message['text']
 				message = message.encode('UTF8')
+
+				if 'openstack' in message:
+					sc.api_call("chat.postMessage", channel=channel_name, text='i hear opensack is a career killer', as_user=True)
+
+
 				if message.startswith('<@UR9HA8KV2>'):
 
 					#message now equals what was after '@timbot'
