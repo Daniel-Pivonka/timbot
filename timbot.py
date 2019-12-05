@@ -13,19 +13,21 @@ sc = SlackClient(slack_token)
 random.seed(datetime.datetime.now())
 
 alert = True
+ideal_lunch_time = "11:30"
+friday_index_elem = 4
 
 while True:
 	history = sc.api_call("groups.history", channel=channel_name, count=1)
 
 	#lunch alert
 	time = datetime.datetime.now().strftime('%H:%M')
-	if time == '11:30':
+	if time == ideal_lunch_time:
 		if alert:
 			sc.api_call("chat.postMessage", channel=channel_name, text='IT IS THE IDEAL LUNCH TIME GO TO LUNCH', as_user=True)
 			alert = False
 	else:
 		alert = True
-					
+
 	# look for a message in the chat that starts with '@timbot .....'
 	if 'messages' in history:
 		for message in  history['messages']:
@@ -45,26 +47,26 @@ while True:
 
 					#where to go to lunch
 					if 'lunch' in message and 'where' in message:
-						
+
 						#if friday
-						if datetime.datetime.today().weekday() == 4:
+						if datetime.datetime.today().weekday() == friday_index_elem:
 							#choose place to go
 							places = ['pauls','moes','asian plus','99s']
 							sc.api_call("chat.postMessage", channel=channel_name, text=random.choice(places), as_user=True)
 
-						#mon-thur 
+						#mon-thur
 						else:
 							sc.api_call("chat.postMessage", channel=channel_name, text='epicurean feast', as_user=True)
 
 					#what time is lunch
 					elif 'lunch' in message and ('time' in message or 'when' in message):
-						sc.api_call("chat.postMessage", channel=channel_name, text="11:30", as_user=True)
+						sc.api_call("chat.postMessage", channel=channel_name, text=ideal_lunch_time, as_user=True)
 
 					#what to eat
 					elif 'what' in message and 'eat' in message:
 						sc.api_call("chat.postMessage", channel=channel_name, text="chicken sandwich", as_user=True)
 
-					#base response 
+					#base response
 					else:
 						sc.api_call("chat.postMessage", channel=channel_name, text="keep pounding", as_user=True)
 
