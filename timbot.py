@@ -5,7 +5,8 @@ import datetime
 
 
 slack_token = os.environ['SLACK_API_TOKEN']
-channel_name = 'GMS5DNGSK'
+channel_name = os.environ['SLACK_CHANNEL_NAME']
+timbot_user_id = os.environ['SLACK_TIMBOT_USER_ID']
 
 sc = SlackClient(slack_token)
 
@@ -23,10 +24,10 @@ while True:
 					sc.api_call("chat.postMessage", channel=channel_name, text='i hear opensack is a career killer', as_user=True)
 
 
-				if message.startswith('<@UR9HA8KV2>'):
+				if message.startswith(timbot_user_id):
 
 					#message now equals what was after '@timbot'
-					message = message.replace('<@UR9HA8KV2>', '')
+					message = message.replace(timbot_user_id, '')
 
 					#check what the message is
 					if 'lunch' in message and 'where' in message:
