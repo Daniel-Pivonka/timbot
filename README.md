@@ -1,9 +1,7 @@
 # timbot
-a slack 'bot' to replace my dear friend tim
+A Slack "bot" to replace our dear friend Tim
 
-https://api.slack.com/custom-integrations/legacy-tokens
-
-https://slack.dev/python-slackclient/
-
-https://api.slack.com/methods 
-
+## References
+- https://api.slack.com/custom-integrations/legacy-tokens
+- https://slack.dev/python-slackclient/
+- https://api.slack.com/methods 
