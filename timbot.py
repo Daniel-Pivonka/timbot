@@ -60,6 +60,10 @@ while True:
 					elif 'lunch' in message and ('time' in message or 'when' in message):
 						sc.api_call("chat.postMessage", channel=channel_name, text="11:30", as_user=True)
 
+					#what to eat
+					elif 'what' in message and 'eat' in message:
+						sc.api_call("chat.postMessage", channel=channel_name, text="chicken sandwich", as_user=True)
+
 					#base response 
 					else:
 						sc.api_call("chat.postMessage", channel=channel_name, text="keep pounding", as_user=True)
