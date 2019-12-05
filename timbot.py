@@ -1,11 +1,20 @@
 import os
-from slackclient import SlackClient
+import yaml
 import random
 import datetime
+from slackclient import SlackClient
 
-slack_token = os.environ['SLACK_API_TOKEN']
-channel_name = os.environ['SLACK_CHANNEL_NAME']
-timbot_user_id = os.environ['SLACK_TIMBOT_USER_ID']
+# load configuration data
+try:
+	with open("config.yaml", 'r') as file:
+		config = yaml.safe_load(file)
+except Exception as e:
+	print("Error loading configuration data: ", e)
+	sys.exit()
+
+slack_token = config['slack_token']
+channel_name = config['channel_name']
+timbot_user_id = config['timbot_user_id']
 
 sc = SlackClient(slack_token)
 
