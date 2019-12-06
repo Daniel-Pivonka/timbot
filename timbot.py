@@ -74,7 +74,7 @@ def run_timbot():
 							# choose place to go
 							places = ['pauls', 'asian plus', 'moes', 'the 99', 'chilis']
 							weights = [0.5, 0.3, 0.1, 0.05, 0.05]
-							choice = np.random.choice(places, weights)
+							choice = np.random.choice(places, p=weights)
 
 							sc.api_call("chat.postMessage", channel=channel_name, text=choice, as_user=True)
 
