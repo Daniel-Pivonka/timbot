@@ -2,6 +2,7 @@ import os
 from slackclient import SlackClient
 import random
 import datetime
+import io
 
 slack_token = os.environ['SLACK_API_TOKEN']
 channel_name = os.environ['SLACK_CHANNEL_NAME']
@@ -23,6 +24,19 @@ def handle_ideal_lunch_time(curr_time):
 		alert = False
 	else:
 		alert = True
+
+def uploadimage(path, title):
+	with open(path, 'rb') as f:
+		responce = sc.api_call(
+			"files.upload",
+			title='sampletitle',
+			file=io.BytesIO(f.read())
+		)
+	fileinfo = responce['file']
+	sc.api_call("files.sharedPublicURL", file=fileinfo['id'])
+	image_url = fileinfo['permalink_public']
+	attachments = [{"title": title, "image_url": image_url}]
+	responce = sc.api_call("chat.postMessage", channel=channel_name, text='test', as_user=True, attachments=attachments)
 
 def run_timbot():
 	history = sc.api_call("groups.history", channel=channel_name, count=1)
@@ -67,6 +81,7 @@ def run_timbot():
 					# what time is lunch
 					elif 'lunch' in message and ('time' in message or 'when' in message):
 						sc.api_call("chat.postMessage", channel=channel_name, text=ideal_lunch_time, as_user=True)
+						uploadimage('images/lunchchart.png', 'IdealLunchTimeChart')
 
 					# what to eat
 					elif 'what' in message and 'eat' in message:
