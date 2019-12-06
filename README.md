@@ -10,6 +10,12 @@ TODO
 - Set enviorment variables for `SLACK_API_TOKEN`, `SLACK_CHANNEL_NAME`, `SLACK_TIMBOT_USER_ID`
 - Run `$ python timbot.py`
 
+#### Packages
+
+To install packages run:
+
+`$ pip install -r requirements.txt`
+
 ### Local Run with Containers
 As an advanced piece of software, timbot features container support via Docker
 
@@ -22,6 +28,8 @@ $ make build-timbot
 ```bash
 $ make run-timbot
 ```
+
+
 
 ## References
 - https://api.slack.com/custom-integrations/legacy-tokens
