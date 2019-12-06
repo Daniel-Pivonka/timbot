@@ -25,7 +25,7 @@ def handle_ideal_lunch_time(curr_time):
 	else:
 		alert = True
 
-def uploadimage(path, title):
+def uploadimage(path, title, text):
 	with open(path, 'rb') as f:
 		responce = sc.api_call(
 			"files.upload",
@@ -36,7 +36,7 @@ def uploadimage(path, title):
 	sc.api_call("files.sharedPublicURL", file=fileinfo['id'])
 	image_url = fileinfo['permalink_public']
 	attachments = [{"title": title, "image_url": image_url}]
-	responce = sc.api_call("chat.postMessage", channel=channel_name, text='test', as_user=True, attachments=attachments)
+	responce = sc.api_call("chat.postMessage", channel=channel_name, text=text, as_user=True, attachments=attachments)
 
 def run_timbot():
 	history = sc.api_call("groups.history", channel=channel_name, count=1)
@@ -81,11 +81,20 @@ def run_timbot():
 					# what time is lunch
 					elif 'lunch' in message and ('time' in message or 'when' in message):
 						sc.api_call("chat.postMessage", channel=channel_name, text=ideal_lunch_time, as_user=True)
-						uploadimage('images/lunchchart.png', 'IdealLunchTimeChart')
+						uploadimage('images/lunchchart.png', 'IdealLunchTimeChart','')
 
 					# what to eat
 					elif 'what' in message and 'eat' in message:
-						sc.api_call("chat.postMessage", channel=channel_name, text="chicken sandwich", as_user=True)
+						# if friday
+						if datetime.datetime.today().weekday() == friday_index_elem:
+							sc.api_call("chat.postMessage", channel=channel_name, text="Its friday enjoy a meal out. Maybe some french toast at pauls?", as_user=True)
+						else:
+							image_url = 'http://cafe.epicureanfeast.com/Clients/8680redhat.jpg'
+							attachments = [{"title": 'Menu', "image_url": image_url}]
+							sc.api_call("chat.postMessage", channel=channel_name, text='Heres the cafe menu', as_user=True, attachments=attachments)
+							sc.api_call("chat.postMessage", channel=channel_name, text="may I suggest the chicken sandwich", as_user=True)
+						
+
 
 					# base response
 					else:
