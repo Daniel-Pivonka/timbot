@@ -1,8 +1,9 @@
+import io
 import os
-from slackclient import SlackClient
 import random
 import datetime
-import io
+import numpy as np
+from slackclient import SlackClient
 
 slack_token = os.environ['SLACK_API_TOKEN']
 channel_name = os.environ['SLACK_CHANNEL_NAME']
@@ -71,8 +72,11 @@ def run_timbot():
 							random.seed(datetime.datetime.now())
 
 							# choose place to go
-							places = ['pauls','moes','asian plus','99s']
-							sc.api_call("chat.postMessage", channel=channel_name, text=random.choice(places), as_user=True)
+							places = ['pauls', 'asian plus', 'moes', 'the 99', 'chilis']
+							weights = [0.5, 0.3, 0.1, 0.05, 0.05]
+							choice = np.random.choice(places, weights)
+
+							sc.api_call("chat.postMessage", channel=channel_name, text=choice, as_user=True)
 
 						# mon-thur
 						else:
