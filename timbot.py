@@ -29,7 +29,7 @@ def handle_ideal_lunch_time(curr_time):
 	else:
 		alert = True
 
-def uploadimage(path, title):
+def uploadimage(path, title, text):
 	with open(path, 'rb') as f:
 		responce = sc.api_call(
 			"files.upload",
@@ -40,7 +40,7 @@ def uploadimage(path, title):
 	sc.api_call("files.sharedPublicURL", file=fileinfo['id'])
 	image_url = fileinfo['permalink_public']
 	attachments = [{"title": title, "image_url": image_url}]
-	responce = sc.api_call("chat.postMessage", channel=channel_name, text='test', as_user=True, attachments=attachments)
+	responce = sc.api_call("chat.postMessage", channel=channel_name, text=text, as_user=True, attachments=attachments)
 
 def run_timbot():
 	history = sc.api_call("groups.history", channel=channel_name, count=1)
@@ -77,7 +77,7 @@ def run_timbot():
 							# choose place to go
 							places = ['pauls', 'asian plus', 'moes', 'the 99', 'chilis']
 							weights = [0.5, 0.3, 0.1, 0.05, 0.05]
-							choice = np.random.choice(places, weights)
+							choice = np.random.choice(places, p=weights)
 
 							send_message(choice)
 
@@ -88,11 +88,18 @@ def run_timbot():
 					# what time is lunch
 					elif 'lunch' in message and ('time' in message or 'when' in message):
 						send_message(ideal_lunch_time)
-						uploadimage('images/lunchchart.png', 'IdealLunchTimeChart')
+						uploadimage('images/lunchchart.png', 'IdealLunchTimeChart','')
 
 					# what to eat
 					elif 'what' in message and 'eat' in message:
-						send_message('chicken sandwich')
+						# if friday
+						if datetime.datetime.today().weekday() == friday_index_elem:
+							send_message('Its friday enjoy a meal out. Maybe some french toast at pauls?')
+						else:
+							image_url = 'http://cafe.epicureanfeast.com/Clients/8680redhat.jpg'
+							attachments = [{"title": 'Menu', "image_url": image_url}]              
+							sc.api_call("chat.postMessage", channel=channel_name, text='Heres the cafe menu', as_user=True, attachments=attachments)
+							send_message("may I suggest the chicken sandwich")
 
 					# base response
 					else:
