@@ -2,7 +2,7 @@ FROM python:2
 
 USER root
 
-RUN pip install slackclient
+RUN pip install slackclient numpy
 
 ADD timbot.py /
 
