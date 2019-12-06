@@ -14,14 +14,15 @@ elif [[ -z "$SLACK_TIMBOT_USER_ID" ]]; then
 fi
 
 CONTAINER_RUN_CMD=${CONTAINER_RUN_CMD:-"podman run"}
+CONTAINER_RUN_IN_BG=${CONTAINER_RUN_IN_BG:="false"}
 
 set -x
 
 ${CONTAINER_RUN_CMD} \
     --name timbot-local \
     --rm \
-    -d \
-    -e SLACK_API_TOKEN="$SLACK_API_TOKEN" \
-    -e SLACK_CHANNEL_NAME="$SLACK_CHANNEL_NAME" \
-    -e SLACK_TIMBOT_USER_ID="$SLACK_TIMBOT_USER_ID" \
+    -e SLACK_API_TOKEN="${SLACK_API_TOKEN}" \
+    -e SLACK_CHANNEL_NAME="${SLACK_CHANNEL_NAME}" \
+    -e SLACK_TIMBOT_USER_ID="${SLACK_TIMBOT_USER_ID}" \
+    -d=${CONTAINER_RUN_IN_BG} \
     -it timbot
