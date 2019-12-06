@@ -19,9 +19,12 @@ def main():
 	while True:
 		run_timbot()
 
+def send_message(text):
+	sc.api_call("chat.postMessage", channel=channel_name, text=text, as_user=True)
+
 def handle_ideal_lunch_time(curr_time):
 	if curr_time == ideal_lunch_time and alert:
-		sc.api_call("chat.postMessage", channel=channel_name, text='IT IS THE IDEAL LUNCH TIME GO TO LUNCH', as_user=True)
+		send_message('IT IS THE IDEAL LUNCH TIME GO TO LUNCH')
 		alert = False
 	else:
 		alert = True
@@ -53,11 +56,11 @@ def run_timbot():
 
 				# openstack meme
 				if 'openstack' in message:
-					sc.api_call("chat.postMessage", channel=channel_name, text='i hear opensack is a career killer', as_user=True)
+					send_message('i hear opensack is a career killer')
 
 				# pong responce
 				elif 'pong' in message:
-					sc.api_call("chat.postMessage", channel=channel_name, text='im in. best 2 out of 3 games to 7?', as_user=True)
+					send_message('im in. best 2 out of 3 games to 7?')
 
 				if message.startswith(timbot_user_id):
 
@@ -76,33 +79,31 @@ def run_timbot():
 							weights = [0.5, 0.3, 0.1, 0.05, 0.05]
 							choice = np.random.choice(places, p=weights)
 
-							sc.api_call("chat.postMessage", channel=channel_name, text=choice, as_user=True)
+							send_message(choice)
 
 						# mon-thur
 						else:
-							sc.api_call("chat.postMessage", channel=channel_name, text='epicurean feast', as_user=True)
+							send_message('epicurean feast')
 
 					# what time is lunch
 					elif 'lunch' in message and ('time' in message or 'when' in message):
-						sc.api_call("chat.postMessage", channel=channel_name, text=ideal_lunch_time, as_user=True)
+						send_message(ideal_lunch_time)
 						uploadimage('images/lunchchart.png', 'IdealLunchTimeChart','')
 
 					# what to eat
 					elif 'what' in message and 'eat' in message:
 						# if friday
 						if datetime.datetime.today().weekday() == friday_index_elem:
-							sc.api_call("chat.postMessage", channel=channel_name, text="Its friday enjoy a meal out. Maybe some french toast at pauls?", as_user=True)
+							send_message('Its friday enjoy a meal out. Maybe some french toast at pauls?')
 						else:
 							image_url = 'http://cafe.epicureanfeast.com/Clients/8680redhat.jpg'
-							attachments = [{"title": 'Menu', "image_url": image_url}]
+							attachments = [{"title": 'Menu', "image_url": image_url}]              
 							sc.api_call("chat.postMessage", channel=channel_name, text='Heres the cafe menu', as_user=True, attachments=attachments)
-							sc.api_call("chat.postMessage", channel=channel_name, text="may I suggest the chicken sandwich", as_user=True)
-						
-
+							send_message("may I suggest the chicken sandwich")
 
 					# base response
 					else:
-						sc.api_call("chat.postMessage", channel=channel_name, text="keep pounding", as_user=True)
+						send_message('keep pounding')
 
 if __name__ == '__main__':
 	main()
