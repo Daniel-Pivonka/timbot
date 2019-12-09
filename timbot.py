@@ -11,7 +11,6 @@ timbot_user_id = os.environ['SLACK_TIMBOT_USER_ID']
 
 sc = SlackClient(slack_token)
 
-alert = True
 ideal_lunch_time = "11:30"
 friday_index_elem = 4
 
@@ -23,11 +22,14 @@ def send_message(text):
 	sc.api_call("chat.postMessage", channel=channel_name, text=text, as_user=True)
 
 def handle_ideal_lunch_time(curr_time):
-	if curr_time == ideal_lunch_time and alert:
-		send_message('IT IS THE IDEAL LUNCH TIME GO TO LUNCH')
-		alert = False
+	print curr_time
+	if curr_time == ideal_lunch_time:
+		if handle_ideal_lunch_time.alert:
+			send_message('IT IS THE IDEAL LUNCH TIME GO TO LUNCH')
+		handle_ideal_lunch_time.alert = False
 	else:
-		alert = True
+		handle_ideal_lunch_time.alert = True
+handle_ideal_lunch_time.alert = True
 
 def uploadimage(path, title, text):
 	with open(path, 'rb') as f:
