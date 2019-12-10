@@ -11,7 +11,7 @@ timbot_user_id = os.environ['SLACK_TIMBOT_USER_ID']
 
 sc = SlackClient(slack_token)
 
-ideal_lunch_time = "11:30"
+ideal_lunch_time = "16:30"
 friday_index_elem = 4
 
 def main():
