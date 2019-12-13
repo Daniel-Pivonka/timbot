@@ -12,7 +12,7 @@ timbot_user_id_striped = timbot_user_id.strip('<@>')
 
 sc = SlackClient(slack_token)
 
-ideal_lunch_time = "11:30"
+ideal_lunch_time = "16:30"
 friday_index_elem = 4
 
 def main():
