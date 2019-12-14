@@ -29,7 +29,6 @@ def handle_ideal_lunch_time(curr_time):
 		handle_ideal_lunch_time.alert = False
 	else:
 		handle_ideal_lunch_time.alert = True
-handle_ideal_lunch_time.alert = True
 
 def uploadimage(path, title, text):
 	with open(path, 'rb') as f:
@@ -43,6 +42,12 @@ def uploadimage(path, title, text):
 	image_url = fileinfo['permalink_public']
 	attachments = [{"title": title, "image_url": image_url}]
 	responce = sc.api_call("chat.postMessage", channel=channel_name, text=text, as_user=True, attachments=attachments)
+
+def choose_lunchcation():
+	places = ['pauls', 'asian plus', 'moes', 'the 99', 'chilis']
+	weights = [0.5, 0.3, 0.1, 0.05, 0.05]
+	choice = np.random.choice(places, p=weights)
+	return choice
 
 def run_timbot():
 	history = sc.api_call("groups.history", channel=channel_name, count=1)
@@ -79,14 +84,11 @@ def run_timbot():
 						if 'lunch' in message and 'where' in message:
 
 							# if friday
-							if datetime.datetime.today().weekday() == friday_index_elem:
+							if (datetime.datetime.today().weekday() == friday_index_elem) or ("no feast" in message):
 								random.seed(datetime.datetime.now())
 
 								# choose place to go
-								places = ['pauls', 'asian plus', 'moes', 'the 99', 'chilis']
-								weights = [0.5, 0.3, 0.1, 0.05, 0.05]
-								choice = np.random.choice(places, p=weights)
-
+								choice = choose_lunchcation()
 								send_message(choice)
 
 							# mon-thur
