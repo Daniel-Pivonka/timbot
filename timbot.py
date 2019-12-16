@@ -7,7 +7,7 @@ from slackclient import SlackClient
 
 slack_token = os.environ['SLACK_API_TOKEN']
 channel_name = os.environ['SLACK_CHANNEL_NAME']
-timbot_user_id = os.environ['SLACK_TIMBOT_USER_ID']
+timbot_user_id = os.environ['SLACK_TIMBOT_USER_ID'].lower()
 timbot_user_id_striped = timbot_user_id.strip('<@>')
 
 sc = SlackClient(slack_token)
@@ -61,8 +61,8 @@ def run_timbot():
 
 				message = data['text']
 				sender = data['user']
-				message = message.encode('UTF8')
-				sender = sender.encode('UTF8')
+				message = message.encode('UTF8').lower()
+				sender = sender.encode('UTF8').lower()
 
 				#check if timbot is sender
 				if sender != timbot_user_id_striped:
@@ -114,6 +114,14 @@ def run_timbot():
 						# base response
 						else:
 							send_message('keep pounding')
+
+				# openstack meme                      temp fix 
+				elif 'openstack' in message and message != 'i hear openstack is a career killer':
+					send_message('i hear openstack is a career killer')
+
+				# pong responce
+				elif 'pong' in message:
+					send_message('im in. best 2 out of 3 games to 7?')
 
 if __name__ == '__main__':
 	main()
