@@ -36,8 +36,6 @@ Once those variables are set, run the following to run the timbot client in the 
 $ make run-timbot
 ```
 
-
-
 ## References
 - https://api.slack.com/custom-integrations/legacy-tokens
 - https://slack.dev/python-slackclient/

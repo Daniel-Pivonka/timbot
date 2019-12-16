@@ -56,15 +56,13 @@ def run_timbot():
 
 	# look for a message in the chat that starts with '@timbot .....'
 	if 'messages' in history:
-		for data in  history['messages']:
+		for data in history['messages']:
 			if 'text' in data and 'user' in data:
 
-				message = data['text']
-				sender = data['user']
-				message = message.encode('UTF8').lower()
-				sender = sender.encode('UTF8').lower()
+				message = data['text'].encode('UTF8').lower()
+				sender = data['user'].encode('UTF8').lower()
 
-				#check if timbot is sender
+				# check if timbot is sender
 				if sender != timbot_user_id_striped:
 
 					# openstack meme
@@ -83,7 +81,7 @@ def run_timbot():
 						# where to go to lunch
 						if 'lunch' in message and 'where' in message:
 
-							# if friday
+							# if friday or "no feast" override included in message
 							if (datetime.datetime.today().weekday() == friday_index_elem) or ("no feast" in message):
 								random.seed(datetime.datetime.now())
 
