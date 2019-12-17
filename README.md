@@ -2,12 +2,19 @@
 A Slack "bot" to replace our dear friend Tim
 
 ## Usage
-### Normal Run
-TODO
+Timbot supports two methods for deploying the bot locally: run the script directly, or build and run a container.
+
+### Prerequisites
+
+In order to interact with timbot, you first need to clone the repository:
+
+```bash
+$ git clone https://github.com/Daniel-Pivonka/timbot/
+```
 
 ### Local Run
 - `$ pip install slackclient`
-- Set enviorment variables for `SLACK_API_TOKEN`, `SLACK_CHANNEL_NAME`, `SLACK_TIMBOT_USER_ID`
+- Set the enviorment variables for `$SLACK_API_TOKEN`, `$SLACK_CHANNEL_NAME`, `$SLACK_TIMBOT_USER_ID`
 - Run `$ python timbot.py`
 
 #### Packages
@@ -17,9 +24,9 @@ To install packages run:
 `$ pip install -r requirements.txt`
 
 ### Local Run with Containers
-As an advanced piece of software, timbot features container support via Docker
+As an advanced piece of software, timbot features container support via your choice of container engine.
 
-##### Building the container image
+##### Building the container image:
 ```bash
 $ make build-timbot
 ```
@@ -33,7 +40,12 @@ $ make build-timbot
 Once those variables are set, run the following to run the timbot client in the foreground:
 
 ```bash
-$ make run-timbot
+$ make start-timbot
+```
+
+In the case where you need to stop running the timbot image, run the following:
+```bash
+$ make stop-timbot
 ```
 
 ## References
