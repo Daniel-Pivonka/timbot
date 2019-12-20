@@ -19,6 +19,9 @@ def main():
 	while True:
 		run_timbot()
 
+def utc_to_est(utc_time):
+	return str((int(utc_time[:2]) - 5) % 24) + ':' + utc_time[-2:]
+
 def send_message(text):
 	sc.api_call("chat.postMessage", channel=channel_name, text=text, as_user=True)
 
@@ -95,7 +98,7 @@ def run_timbot():
 
 						# what time is lunch
 						elif 'lunch' in message and ('time' in message or 'when' in message):
-							send_message(ideal_lunch_time)
+							send_message(utc_to_est(ideal_lunch_time))
 							uploadimage('images/lunchchart.png', 'IdealLunchTimeChart','')
 
 						# what to eat
@@ -105,7 +108,7 @@ def run_timbot():
 								send_message('Its friday enjoy a meal out. Maybe some french toast at pauls?')
 							else:
 								image_url = 'http://cafe.epicureanfeast.com/Clients/8680redhat.jpg'
-								attachments = [{"title": 'Menu', "image_url": image_url}]              
+								attachments = [{"title": 'Menu', "image_url": image_url}]
 								sc.api_call("chat.postMessage", channel=channel_name, text='Heres the cafe menu', as_user=True, attachments=attachments)
 								send_message("may I suggest the chicken sandwich")
 
@@ -113,7 +116,7 @@ def run_timbot():
 						else:
 							send_message('keep pounding')
 
-				# openstack meme                      temp fix 
+				# openstack meme                      temp fix
 				elif 'openstack' in message and message != 'i hear openstack is a career killer':
 					send_message('i hear openstack is a career killer')
 
