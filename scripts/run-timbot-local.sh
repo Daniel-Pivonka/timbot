@@ -14,11 +14,12 @@ elif [[ -z "$SLACK_TIMBOT_USER_ID" ]]; then
 fi
 
 CONTAINER_RUN_CMD=${CONTAINER_RUN_CMD:-"podman run"}
+CONTAIMER_IMAGE_NAME=${CONTAINER_IMAGE_NAME:-"timbot-local"}
 
 set -x
 
 ${CONTAINER_RUN_CMD} \
-    --name timbot-local \
+    --name "${CONTAINER_IMAGE_NAME}" \
     --restart always \
     -e SLACK_API_TOKEN="${SLACK_API_TOKEN}" \
     -e SLACK_CHANNEL_NAME="${SLACK_CHANNEL_NAME}" \
