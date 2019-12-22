@@ -33,7 +33,7 @@ def handle_ideal_lunch_time(curr_time):
 	else:
 		handle_ideal_lunch_time.alert = True
 
-def uploadimage(path, title, text):
+def upload_image(path, title, text):
 	with open(path, 'rb') as f:
 		responce = sc.api_call(
 			"files.upload",
@@ -97,9 +97,10 @@ def run_timbot():
 								send_message('epicurean feast')
 
 						# what time is lunch
+						# todo(tflannag) handle case where day is weekend
 						elif 'lunch' in message and ('time' in message or 'when' in message):
 							send_message(utc_to_est(ideal_lunch_time))
-							uploadimage('images/lunchchart.png', 'IdealLunchTimeChart','')
+							upload_image('images/lunchchart.png', 'IdealLunchTimeChart','')
 
 						# what to eat
 						elif 'what' in message and 'eat' in message:
