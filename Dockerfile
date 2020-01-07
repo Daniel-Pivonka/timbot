@@ -4,8 +4,7 @@ USER root
 
 RUN pip install slackclient numpy
 
-ADD timbot.py /
-
 COPY images /images
+COPY lib /
 
 CMD [ "python", "./timbot.py" ]
