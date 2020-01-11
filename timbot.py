@@ -55,7 +55,7 @@ def run_timbot():
 	history = sc.api_call("groups.history", channel=channel_name, count=1)
 
 	# handle ideal lunch time if it is a weekday
-	if datetime.datetime.today().weekday() != saturday_index_elem or datetime.datetime.today().weekday() != sunday_index_elem:
+	if datetime.datetime.today().weekday() not in [saturday_index_elem, sunday_index_elem]:
 		handle_ideal_lunch_time(datetime.datetime.now().strftime('%H:%M'))
 
 	# look for a message in the chat that starts with '@timbot .....'
