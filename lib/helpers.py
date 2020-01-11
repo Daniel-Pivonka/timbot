@@ -9,6 +9,3 @@ def choose_lunchcation():
 	weights = [0.5, 0.3, 0.1, 0.05, 0.05]
 	choice = np.random.choice(places, p=weights)
 	return choice
-
-def print_json(json_dict):
-	print(json.dumps(json_dict, indent=2))
