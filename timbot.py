@@ -14,6 +14,8 @@ sc = SlackClient(slack_token)
 
 ideal_lunch_time = "16:30"
 friday_index_elem = 4
+saturday_index_elem = 5
+sunday_index_elem = 6
 
 def main():
 	while True:
@@ -52,7 +54,9 @@ def choose_lunchcation():
 def run_timbot():
 	history = sc.api_call("groups.history", channel=channel_name, count=1)
 
-	handle_ideal_lunch_time(datetime.datetime.now().strftime('%H:%M'))
+	# handle ideal lunch time if it is a weekday
+	if datetime.datetime.today().weekday() != saturday_index_elem or datetime.datetime.today().weekday() != sunday_index_elem:
+		handle_ideal_lunch_time(datetime.datetime.now().strftime('%H:%M'))
 
 	# look for a message in the chat that starts with '@timbot .....'
 	if 'messages' in history:
