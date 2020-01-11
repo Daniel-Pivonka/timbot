@@ -108,8 +108,9 @@ class Timbot:
 				self.send_lunch_time_notification()
 
 			# wait until there are messages populated in the history dictionary
-			if 'messages' not in history or len(history['messages']) == 0:
+			while 'messages' not in history or len(history['messages']) == 0:
 				time.sleep(1.5)
+				history = self.get_channel_history()
 
 			for data in history['messages']:
 				# check if the last message was from a user and not a bot
