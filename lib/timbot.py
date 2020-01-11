@@ -36,7 +36,7 @@ class Timbot:
 		return self.message_handler[next(key for key in self.message_handler if key in message)]
 
 	def get_channel_history(self):
-		return self.client.api_call("channel.history", channel=self.channel_id, count=1)
+		return self.client.api_call("group.history", channel=self.channel_id, count=1)
 
 	def send_message(self, text):
 		self.client.api_call('chat.postMessage', channel=self.channel_id, text=text, as_user=False)
