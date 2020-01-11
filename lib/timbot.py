@@ -80,7 +80,7 @@ class Timbot:
 			else:
 				self.send_message(self.default_lunchcation)
 		elif 'when' in message or 'time' in message:
-			self.send_chat_image("lunchcharts.png", '', 'IdealLunchTimeChart', self.ideal_lunch_time)
+			self.send_chat_image("lunchchart.png", '', 'IdealLunchTimeChart', self.ideal_lunch_time)
 		elif 'what' in message and 'eat' in message:
 			if datetime.datetime.today().weekday() == self.weekday_lunch_index:
 				self.send_message('Its friday enjoy a meal out. Maybe some french toast at pauls?')
