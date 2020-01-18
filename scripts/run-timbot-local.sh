@@ -13,7 +13,7 @@ elif [[ -z "$SLACK_TIMBOT_USER_ID" ]]; then
     exit 1
 fi
 
-CONTAINER_RUN_CMD=${CONTAINER_RUN_CMD:-"podman run"}
+CONTAINER_RUN_CMD=${CONTAINER_RUN_CMD:-"docker run"}
 
 set -x
 
