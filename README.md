@@ -1,4 +1,6 @@
-# timbot
+# timbot 
+![](https://github.com/Daniel-Pivonka/timbot/workflows/timbot/badge.svg)
+
 A Slack "bot" to replace our dear friend Tim
 
 ## Usage
