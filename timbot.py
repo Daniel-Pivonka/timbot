@@ -101,12 +101,12 @@ def run_timbot():
 								send_message('epicurean feast')
 
 						# what time is lunch
-						elif 'lunch' in message and ('time' in message or 'when' in message):
+						elif ('lunch' in message) and ('time' in message or 'when' in message):
 							send_message(utc_to_est(ideal_lunch_time))
 							uploadimage('images/lunchchart.png', 'IdealLunchTimeChart','')
 
 						# what to eat
-						elif 'what' in message and 'eat' in message:
+						elif ('what' in message) and ('eat' or 'lunch' in message):
 							# if friday
 							if datetime.datetime.today().weekday() == friday_index_elem:
 								send_message('Its friday enjoy a meal out. Maybe some french toast at pauls?')
