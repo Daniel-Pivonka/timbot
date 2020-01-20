@@ -1,13 +1,9 @@
-name: timbot
+name: flake8
 
-on:
-  pull_request:
-    branches: 
-      - master
+on: pull_request
 
 jobs:
-  build:
-    name: automated_checks
+  lint:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repo
