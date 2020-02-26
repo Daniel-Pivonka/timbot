@@ -16,6 +16,14 @@ ideal_lunch_time = "16:30"
 friday_index_elem = 4
 saturday_index_elem = 5
 sunday_index_elem = 6
+help_text = '''
+	You can ask me the following:
+	'where lunch': i tell you where to eat lunch
+	'where lunch no feast': i tell you where to eat lunch that isn't epicurean feast
+	'when lunch'/'lunch time': i tell you when to eat lunch
+	'what lunch'/'what eat': i tell you what to eat
+	'help': this
+'''
 
 def main():
 	while True:
@@ -116,15 +124,18 @@ def run_timbot():
 								sc.api_call("chat.postMessage", channel=channel_name, text='Heres the cafe menu', as_user=True, attachments=attachments)
 								send_message("may I suggest the chicken sandwich")
 
+						elif 'help' in message:
+							send_message(help_text)
+
 						# base response
 						else:
 							send_message('keep pounding')
 
-				# openstack meme                      temp fix
+				# openstack meme (temp fix)
 				elif 'openstack' in message and message != 'i hear openstack is a career killer':
 					send_message('i hear openstack is a career killer')
 
-				# pong responce
+				# pong response (temp fix)
 				elif 'pong' in message:
 					send_message('im in. best 2 out of 3 games to 7?')
 
