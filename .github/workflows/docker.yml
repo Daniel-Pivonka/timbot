@@ -1,0 +1,13 @@
+name: docker
+
+on: [pull_request, push]
+
+jobs:
+  build_docker_image:
+    runs-on: ubuntu-latest
+    name: build
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v1
+    - name: Build container image
+      run: docker build -f Dockerfile .
