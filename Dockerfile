@@ -2,7 +2,9 @@ FROM python:2
 
 USER root
 
-RUN pip install slackclient numpy
+COPY requirements.txt /tmp/
+RUN pip install --requirement /tmp/requirements.txt
+COPY . /tmp/
 
 ADD timbot.py /
 
