@@ -1,5 +1,6 @@
-# timbot 
+# timbot
 ![](https://github.com/Daniel-Pivonka/timbot/workflows/flake8/badge.svg)
+![](https://github.com/Daniel-Pivonka/timbot/workflows/docker/badge.svg)
 
 A Slack "bot" to replace our dear friend Tim
 
