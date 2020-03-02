@@ -18,11 +18,11 @@ saturday_index_elem = 5
 sunday_index_elem = 6
 help_text = '''
 	You can ask me the following:
-	'where lunch': i tell you where to eat lunch
-	'where lunch no feast': i tell you where to eat lunch that isn't epicurean feast
-	'when lunch'/'lunch time': i tell you when to eat lunch
-	'what lunch'/'what eat': i tell you what to eat
-	'help': this
+	`where lunch`: i tell you where to eat lunch
+	`where lunch no feast`: i tell you where to eat lunch that isn't epicurean feast
+	`when lunch/lunch time`: i tell you when to eat lunch
+	`what lunch/what eat`: i tell you what to eat
+	`help`: this
 '''
 
 def main():
