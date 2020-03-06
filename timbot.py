@@ -2,7 +2,6 @@ import io
 import os
 import random
 import datetime
-import numpy as np
 from slackclient import SlackClient
 
 slack_token = os.environ['SLACK_API_TOKEN']
@@ -63,10 +62,7 @@ def uploadimage(path, title, text):
 
 
 def choose_lunchcation():
-    places = ['pauls', 'asian plus', 'moes', 'the 99', 'chilis']
-    weights = [0.5, 0.2, 0.05, 0.3, 0.05]
-    choice = np.random.choice(places, p=weights)
-    return choice
+    return "the 99"
 
 
 def run_timbot():
