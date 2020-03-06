@@ -64,7 +64,7 @@ def uploadimage(path, title, text):
 
 def choose_lunchcation():
     places = ['pauls', 'asian plus', 'moes', 'the 99', 'chilis']
-    weights = [0.5, 0.3, 0.1, 0.05, 0.05]
+    weights = [0.5, 0.2, 0.05, 0.3, 0.05]
     choice = np.random.choice(places, p=weights)
     return choice
 
