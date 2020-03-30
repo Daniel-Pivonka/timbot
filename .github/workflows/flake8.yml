@@ -20,4 +20,4 @@ jobs:
       run: |
         pip install flake8
         # run the flake8 command and ignore E501 (line too long) errors
-        flake8 --ignore=E501 .
+        flake8 --ignore=E501,W191 .

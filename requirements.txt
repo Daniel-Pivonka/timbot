@@ -1,2 +1,5 @@
 numpy==1.16.5
 flake8==3.7.9
+mysql-connector==2.2.9
+mysql-connector-python==8.0.19
+pyyaml==5.1

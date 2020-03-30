@@ -1,9 +1,14 @@
 import io
 import os
+import sys
+import yaml
 import random
 import datetime
 import numpy as np
+import database as db
+import mysql.connector
 from slackclient import SlackClient
+from mysql.connector import errorcode
 
 slack_token = os.environ['SLACK_API_TOKEN']
 channel_name = os.environ['SLACK_CHANNEL_NAME']
@@ -22,6 +27,7 @@ help_text = '''
     `where lunch no feast`: i tell you where to eat lunch that isn't epicurean feast
     `when lunch/lunch time`: i tell you when to eat lunch
     `what lunch/what eat`: i tell you what to eat
+    `show webopoly standings`: show who is captalist king and who is poor
     `help`: this
 '''
 
@@ -132,6 +138,15 @@ def run_timbot():
                                 sc.api_call("chat.postMessage", channel=channel_name, text='Heres the cafe menu', as_user=True, attachments=attachments)
                                 send_message("may I suggest the chicken sandwich")
 
+                        # webopoly standings
+                        elif 'show webopoly standings' in message:
+                            raw_standings = db.getWebopolyStandings(conn)
+                            standings = "{} is the reigning champ with {} wins".format(raw_standings[0][0], raw_standings[0][1])
+                            for record in raw_standings[1:-1]:
+                                standings += "\n{} is next with {} wins".format(record[0], record[1])
+                            standings += "And in last is loser {} with {} wins".format(raw_standings[-1][0], raw_standings[-1][1])
+                            send_message(standings)
+
                         elif 'help' in message:
                             send_message(help_text)
 
@@ -149,4 +164,30 @@ def run_timbot():
 
 
 if __name__ == '__main__':
-    main()
+
+    # load configuration data
+    try:
+        with open('config.yaml', 'r') as file:
+            config = yaml.load(file)
+    except Exception as e:
+        print("Error loading configuration data: ", e)
+        sys.exit()
+
+    # connect to database
+    try:
+        conn = mysql.connector.connect(user=config['mysql']['user'],
+                                       password=config['mysql']['password'],
+                                       host=config['mysql']['host'],
+                                       database=config['mysql']['database'])
+
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("Something is wrong with your user name or password")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("Database does not exist")
+        else:
+            print(err)
+        sys.exit()
+
+    else:
+        main()
