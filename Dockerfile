@@ -8,6 +8,10 @@ COPY . /tmp/
 
 ADD timbot.py /
 
+ADD database.py /
+
+ADD config.yaml /
+
 COPY images /images
 
 CMD [ "python", "./timbot.py" ]
