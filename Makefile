@@ -19,4 +19,4 @@ stop-timbot:
 
 clean:
 	$(MAKE) stop-timbot
-	$(CONTAINER_BASE_CMD) rmi $(TIMBOT_IMAGE_NAME)
+	$(CONTAINER_BASE_CMD) rm $(TIMBOT_IMAGE_NAME)
