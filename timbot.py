@@ -12,7 +12,7 @@ timbot_user_id_striped = timbot_user_id.strip('<@>')
 
 sc = SlackClient(slack_token)
 
-ideal_lunch_time = "16:30"
+ideal_lunch_time = "15:30"
 friday_index_elem = 4
 saturday_index_elem = 5
 sunday_index_elem = 6
@@ -31,6 +31,7 @@ def main():
         run_timbot()
 
 
+# TODO: Change this to handle daylight savings
 def utc_to_est(utc_time):
     return str((int(utc_time[:2]) - 5) % 24) + ':' + utc_time[-2:]
 
