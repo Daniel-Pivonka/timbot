@@ -144,7 +144,7 @@ def run_timbot():
                             standings = "{} is the reigning champ with {} wins".format(raw_standings[0][0], raw_standings[0][1])
                             for record in raw_standings[1:-1]:
                                 standings += "\n{} is next with {} wins".format(record[0], record[1])
-                            standings += "And in last is loser {} with {} wins".format(raw_standings[-1][0], raw_standings[-1][1])
+                            standings += "\nAnd in last is loser {} with {} wins".format(raw_standings[-1][0], raw_standings[-1][1])
                             send_message(standings)
 
                         elif 'help' in message:
