@@ -23,7 +23,6 @@ And appropriately set the following environment variables:
 To run timbot without using container technology, run the following commands:
 
 - `$ pip install -r requirements.txt`
-- `$ pip install slackclient`
 - `$ python timbot.py`
 
 ### Local Run with Containers
