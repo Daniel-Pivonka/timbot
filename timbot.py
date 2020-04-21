@@ -124,7 +124,7 @@ def run_timbot():
 
                         # what time is lunch
                         elif ('lunch' in message) and ('time' in message or 'when' in message):
-                            send_message(utc_to_est(ideal_lunch_time))
+                            send_message("11:30")
                             uploadimage('images/lunchchart.png', 'IdealLunchTimeChart', '')
 
                         # what to eat
