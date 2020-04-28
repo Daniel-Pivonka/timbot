@@ -3,7 +3,6 @@ __pycache__/
 *$py.class
 
 htmlcov/
-config.yaml
 .tox/
 .nox/
 .coverage
@@ -18,3 +17,4 @@ coverage.xml
 
 # timbot specific ignores
 dev-local-env
+config.yaml
