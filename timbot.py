@@ -1,6 +1,7 @@
 import io
 import os
 import sys
+import time
 import yaml
 import random
 import datetime
@@ -10,12 +11,6 @@ import mysql.connector
 from slackclient import SlackClient
 from mysql.connector import errorcode
 
-slack_token = os.environ['SLACK_API_TOKEN']
-channel_name = os.environ['SLACK_CHANNEL_NAME']
-timbot_user_id = os.environ['SLACK_TIMBOT_USER_ID'].lower()
-timbot_user_id_striped = timbot_user_id.strip('<@>')
-
-sc = SlackClient(slack_token)
 
 ideal_lunch_time = "15:30"
 friday_index_elem = 4
@@ -32,18 +27,13 @@ help_text = '''
 '''
 
 
-def main():
-    while True:
-        run_timbot()
-
-
 # TODO: Change this to handle daylight savings
 def utc_to_est(utc_time):
     return str((int(utc_time[:2]) - 5) % 24) + ':' + utc_time[-2:]
 
 
 def send_message(text):
-    sc.api_call("chat.postMessage", channel=channel_name, text=text, as_user=True)
+    sc.api_call("chat.postMessage", channel=channel_name, text=text, as_user=use_authenticated_user)
 
 
 def handle_ideal_lunch_time(curr_time):
@@ -57,16 +47,16 @@ def handle_ideal_lunch_time(curr_time):
 
 def uploadimage(path, title, text):
     with open(path, 'rb') as f:
-        responce = sc.api_call(
+        response = sc.api_call(
             "files.upload",
             title='sampletitle',
             file=io.BytesIO(f.read())
         )
-    fileinfo = responce['file']
+    fileinfo = response['file']
     sc.api_call("files.sharedPublicURL", file=fileinfo['id'])
     image_url = fileinfo['permalink_public']
     attachments = [{"title": title, "image_url": image_url}]
-    responce = sc.api_call("chat.postMessage", channel=channel_name, text=text, as_user=True, attachments=attachments)
+    response = sc.api_call("chat.postMessage", channel=channel_name, text=text, as_user=use_authenticated_user, attachments=attachments)
 
 
 def choose_lunchcation():
@@ -76,6 +66,51 @@ def choose_lunchcation():
     return choice
 
 
+def handle_timbot_message(message):
+    # where to go to lunch
+    if 'lunch' in message and 'where' in message:
+        # if friday or "no feast" override included in message
+        if (datetime.datetime.today().weekday() == friday_index_elem) or ("no feast" in message):
+            random.seed(datetime.datetime.now())
+            choice = choose_lunchcation()
+            send_message(choice)
+        # mon-thur
+        else:
+            send_message('epicurean feast')
+
+    # what time is lunch
+    elif ('lunch' in message) and ('time' in message or 'when' in message):
+        send_message(utc_to_est(ideal_lunch_time))
+        uploadimage('images/lunchchart.png', 'IdealLunchTimeChart', '')
+
+    # what to eat
+    elif ('what' in message) and ('eat' or 'lunch' in message):
+        # if friday
+        if datetime.datetime.today().weekday() == friday_index_elem:
+            send_message('Its friday enjoy a meal out. Maybe some french toast at pauls?')
+        else:
+            image_url = 'http://cafe.epicureanfeast.com/Clients/8680redhat.jpg'
+            attachments = [{"title": 'Menu', "image_url": image_url}]
+            sc.api_call("chat.postMessage", channel=channel_name, text='Heres the cafe menu', as_user=use_authenticated_user, attachments=attachments)
+            send_message("may I suggest the chicken sandwich")
+
+    # webopoly standings
+    elif 'show webopoly standings' in message:
+        raw_standings = db.get_webopoly_standings(conn)
+        standings = "{} is the reigning champ with {} wins".format(raw_standings[0][0], raw_standings[0][1])
+        for record in raw_standings[1:-1]:
+            standings += "\n{} is next with {} wins".format(record[0], record[1])
+        standings += "\nAnd in last is loser {} with {} wins".format(raw_standings[-1][0], raw_standings[-1][1])
+        send_message(standings)
+
+    elif 'help' in message:
+        send_message(help_text)
+
+    # base response
+    else:
+        send_message('keep pounding')
+
+
 def run_timbot():
     history = sc.api_call("groups.history", channel=channel_name, count=1)
 
@@ -83,87 +118,53 @@ def run_timbot():
     if datetime.datetime.today().weekday() not in [saturday_index_elem, sunday_index_elem]:
         handle_ideal_lunch_time(datetime.datetime.now().strftime('%H:%M'))
 
-    # look for a message in the chat that starts with '@timbot .....'
-    if 'messages' in history:
-        for data in history['messages']:
-            if 'text' in data and 'user' in data:
+    # check if there's any messages in the channel history
+    # if not, sleep for two seconds and continue polling
+    if 'messages' not in history:
+        print('[DEBUG]: no logs in history, sleeping...')
+        time.sleep(2)
+        return
 
-                message = data['text'].encode('UTF8').lower()
-                sender = data['user'].encode('UTF8').lower()
+    for data in history['messages']:
+        if 'text' not in data or 'user' not in data:
+            continue
 
-                # check if timbot is sender
-                if sender != timbot_user_id_striped:
+        sender = data['user'].encode('UTF8').lower()
+        if sender == timbot_user_id_striped:
+            print('[DEBUG] last message was from the timbot_user_id, continuing to next loop iteration')
+            continue
 
-                    # openstack meme
-                    if 'openstack' in message:
-                        send_message('i hear openstack is a career killer')
+        message = data['text'].encode('UTF8').lower()
 
-                    # pong responce
-                    elif 'pong' in message:
-                        send_message('im in. best 2 out of 3 games to 7?')
+        # openstack meme
+        if 'openstack' in message:
+            send_message('i hear openstack is a career killer')
 
-                    if message.startswith(timbot_user_id):
+        # pong response
+        if 'pong' in message:
+            send_message('im in. best 2 out of 3 games to 7?')
 
-                        # message now equals what was after '@timbot'
-                        message = message.replace(timbot_user_id, '')
+        # look for a message in the chat that starts with '@timbot .....'
+        if message.startswith(timbot_user_id):
+            handle_timbot_message(message.replace(timbot_user_id, ''))
 
-                        # where to go to lunch
-                        if 'lunch' in message and 'where' in message:
 
-                            # if friday or "no feast" override included in message
-                            if (datetime.datetime.today().weekday() == friday_index_elem) or ("no feast" in message):
-                                random.seed(datetime.datetime.now())
-
-                                # choose place to go
-                                choice = choose_lunchcation()
-                                send_message(choice)
-
-                            # mon-thur
-                            else:
-                                send_message('epicurean feast')
-
-                        # what time is lunch
-                        elif ('lunch' in message) and ('time' in message or 'when' in message):
-                            send_message(utc_to_est(ideal_lunch_time))
-                            uploadimage('images/lunchchart.png', 'IdealLunchTimeChart', '')
-
-                        # what to eat
-                        elif ('what' in message) and ('eat' or 'lunch' in message):
-                            # if friday
-                            if datetime.datetime.today().weekday() == friday_index_elem:
-                                send_message('Its friday enjoy a meal out. Maybe some french toast at pauls?')
-                            else:
-                                image_url = 'http://cafe.epicureanfeast.com/Clients/8680redhat.jpg'
-                                attachments = [{"title": 'Menu', "image_url": image_url}]
-                                sc.api_call("chat.postMessage", channel=channel_name, text='Heres the cafe menu', as_user=True, attachments=attachments)
-                                send_message("may I suggest the chicken sandwich")
-
-                        # webopoly standings
-                        elif 'show webopoly standings' in message:
-                            raw_standings = db.getWebopolyStandings(conn)
-                            standings = "{} is the reigning champ with {} wins".format(raw_standings[0][0], raw_standings[0][1])
-                            for record in raw_standings[1:-1]:
-                                standings += "\n{} is next with {} wins".format(record[0], record[1])
-                            standings += "\nAnd in last is loser {} with {} wins".format(raw_standings[-1][0], raw_standings[-1][1])
-                            send_message(standings)
-
-                        elif 'help' in message:
-                            send_message(help_text)
-
-                        # base response
-                        else:
-                            send_message('keep pounding')
-
-                # openstack meme (temp fix)
-                elif 'openstack' in message and message != 'i hear openstack is a career killer':
-                    send_message('i hear openstack is a career killer')
-
-                # pong response (temp fix)
-                elif 'pong' in message:
-                    send_message('im in. best 2 out of 3 games to 7?')
+def main():
+    while True:
+        run_timbot()
 
 
 if __name__ == '__main__':
+    slack_token = os.environ['SLACK_API_TOKEN']
+    channel_name = os.environ['SLACK_CHANNEL_NAME']
+    timbot_user_id = os.environ['SLACK_TIMBOT_USER_ID'].lower()
+    timbot_user_id_striped = timbot_user_id.strip('<@>')
+    sc = SlackClient(slack_token)
+
+    use_authenticated_user = True
+    dev_mode = os.environ.get('TIMBOT_USE_DEV_MODE', False)
+    if dev_mode == True:
+        use_authenticated_user = False
 
     # load configuration data
     try:
@@ -189,5 +190,4 @@ if __name__ == '__main__':
             print(err)
         sys.exit()
 
-    else:
-        main()
+    main()
