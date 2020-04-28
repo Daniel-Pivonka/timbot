@@ -163,7 +163,7 @@ if __name__ == '__main__':
 
     use_authenticated_user = True
     dev_mode = os.environ.get('TIMBOT_USE_DEV_MODE', False)
-    if dev_mode == True:
+    if dev_mode:
         use_authenticated_user = False
 
     # load configuration data
