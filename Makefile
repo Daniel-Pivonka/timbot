@@ -8,13 +8,16 @@ CONTAINER_RUN_IN_BG := true
 
 TIMBOT_IMAGE_NAME := timbot-local
 
-build-timbot:
-	$(CONTAINER_BUILD_CMD) -f Dockerfile -t timbot $(ROOT_DIR)
+build:
+	$(CONTAINER_BUILD_CMD) -f Dockerfile -t timbot:timbot $(ROOT_DIR)
 
-start-timbot:
+run:
 	$(ROOT_DIR)/scripts/run-timbot-local.sh
 
-stop-timbot:
+dev:
+	$(ROOT_DIR)/scripts/run-timbot-dev.sh
+
+stop:
 	$(CONTAINER_BASE_CMD) stop $(TIMBOT_IMAGE_NAME)
 
 clean:

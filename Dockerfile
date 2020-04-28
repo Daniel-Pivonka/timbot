@@ -6,12 +6,7 @@ COPY requirements.txt /tmp/
 RUN pip install --requirement /tmp/requirements.txt
 COPY . /tmp/
 
-ADD timbot.py /
-
-ADD database.py /
-
-ADD config.yaml /
-
+COPY src /src
 COPY images /images
 
-CMD [ "python", "./timbot.py" ]
+CMD [ "python", "./src/timbot.py" ]
