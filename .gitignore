@@ -15,3 +15,6 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
+
+# timbot specific ignores
+dev-local-env
