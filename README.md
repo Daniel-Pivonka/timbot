@@ -23,6 +23,13 @@ And appropriately set the following environment variables:
 - `$SLACK_CHANNEL_ID`: the channel ID number.
 - `$SLACK_TIMBOT_USER_ID`: the timbot slack user ID.
 
+To use the database, you'll have to set the following environment variables as well:
+
+- `$SQL_HOST`: <Your MySQL host>
+- `$SQL_USER`: <Your MySQL user>
+- `$SQL_PASSWORD`: <Your MySQL password>
+- `$SQL_DATABASE`: <Your MySQL database>
+
 ### Local Run without Containers
 
 To run timbot without using container technology, run the following commands:

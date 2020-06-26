@@ -2,7 +2,6 @@ import io
 import os
 import sys
 import time
-import yaml
 import random
 import datetime
 import numpy as np
@@ -166,22 +165,14 @@ if __name__ == '__main__':
     if dev_mode:
         use_authenticated_user = False
 
-    # load configuration data
-    try:
-        with open('config.yaml', 'r') as file:
-            config = yaml.load(file)
-    except Exception as e:
-        print("Error loading configuration data: ", e)
-        sys.exit()
-
     # connect to database
     try:
-        conn = mysql.connector.connect(user=config['mysql']['user'],
-                                       password=config['mysql']['password'],
-                                       host=config['mysql']['host'],
-                                       database=config['mysql']['database'])
+        conn = mysql.connector.connect(user=os.environ['SQL_USER'],
+                                       password=os.environ['SQL_PASSWORD'],
+                                       host=os.environ['SQL_HOST'],
+                                       database=os.environ['SQL_DATABASE'])
 
-    except mysql.connector.Error as err:
+    except Exception as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             print("Something is wrong with your user name or password")
         elif err.errno == errorcode.ER_BAD_DB_ERROR:
