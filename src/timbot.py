@@ -21,6 +21,7 @@ help_text = '''
     `where lunch no feast`: i tell you where to eat lunch that isn't epicurean feast
     `when lunch/lunch time`: i tell you when to eat lunch
     `what lunch/what eat`: i tell you what to eat
+    `increment weboploy win <name>`: more glory to whoever <name> is
     `show webopoly standings`: show who is captalist king and who is poor
     `help`: this
 '''
@@ -92,6 +93,14 @@ def handle_timbot_message(message):
             attachments = [{"title": 'Menu', "image_url": image_url}]
             sc.api_call("chat.postMessage", channel=channel_name, text='Heres the cafe menu', as_user=use_authenticated_user, attachments=attachments)
             send_message("may I suggest the chicken sandwich")
+
+    # increment weboploy win
+    elif 'increment weboploy win' in message:
+        name = message.split()[-1]
+        try:
+            db.increment_weboploy_wins(conn, name)
+        except Exception as e:
+            send_message("Couldn't do it cause {}".format(e))
 
     # webopoly standings
     elif 'show webopoly standings' in message:
