@@ -11,6 +11,18 @@ elif [[ -z "$SLACK_CHANNEL_NAME" ]]; then
 elif [[ -z "$SLACK_TIMBOT_USER_ID" ]]; then
     echo "You need to set the \$SLACK_TIMBOT_USER_ID"
     exit 1
+elif [[ -z "$SQL_HOST" ]]; then
+    echo "You need to set the \$SQL_HOST"
+    exit 1
+elif [[ -z "$SQL_USER" ]]; then
+    echo "You need to set the \$SQL_USER"
+    exit 1
+elif [[ -z "$SQL_PASSWORD" ]]; then
+    echo "You need to set the \$SQL_PASSWORD"
+    exit 1
+elif [[ -z "$SQL_DATABASE" ]]; then
+    echo "You need to set the \$SQL_DATABASE"
+    exit 1
 fi
 
 CONTAINER_RUN_CMD=${CONTAINER_RUN_CMD:-"docker run"}
