@@ -25,16 +25,17 @@ And appropriately set the following environment variables:
 
 To use the database, you'll have to set the following environment variables as well:
 
-- `$SQL_HOST`: <Your MySQL host>
-- `$SQL_USER`: <Your MySQL user>
-- `$SQL_PASSWORD`: <Your MySQL password>
-- `$SQL_DATABASE`: <Your MySQL database>
+- `$SQL_HOST`: your MySQL host
+- `$SQL_USER`: your MySQL user
+- `$SQL_PASSWORD`: your MySQL password
+- `$SQL_DATABASE`: your MySQL database
 
 ### Local Run without Containers
 
 To run timbot without using container technology, run the following commands:
 
 - `$ pip install -r requirements.txt`
+- `$ cd src`
 - `$ python timbot.py`
 
 ### Local Run with Containers
@@ -52,7 +53,7 @@ make build
 Run the following command to run the timbot client in the foreground:
 
 ```bash
-make start
+make run
 ```
 
 In the case where you want to run timbot is developer-friendly environment:
@@ -65,6 +66,12 @@ In the case where you need to stop running the timbot image, run the following:
 
 ```bash
 make stop
+```
+
+#### Cleaning the container image
+
+```bash
+make clean
 ```
 
 ## References

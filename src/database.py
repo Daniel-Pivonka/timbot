@@ -8,7 +8,9 @@ def get_webopoly_standings(conn):
 
 def increment_weboploy_wins(conn, name):
     cursor = conn.cursor()
-    cursor.execute('UPDATE webopoly SET wins = wins + 1 WHERE webopoly.uid = (SELECT uid FROM users WHERE name = "{}")'.format(name))
+    uid = int(cursor.execute('SELECT uid FROM users WHERE name = "{}"'.format(name)))
+    wins = int(cursor.execute('SELECT wins FROM webopoly WHERE uid = {}'.format(uid)))
+    cursor.execute('UPDATE webopoly SET wins = {} WHERE uid = {}'.format(wins + 1, uid))
     conn.commit()
     cursor.close()
     return None
