@@ -7,5 +7,11 @@ ${CONTAINER_RUN_CMD} \
     --rm \
     -it \
     --network="host" \
-    --env-file ${CONTAINER_ENV_FILE} \
+    -e SLACK_API_TOKEN="$SLACK_API_TOKEN" \
+    -e SLACK_TIMBOT_USER_ID="$SLACK_TIMBOT_USER_ID" \
+    -e SLACK_CHANNEL_ID="$SLACK_CHANNEL_ID" \
+    -e MYSQL_USER="$MYSQL_USER" \
+    -e MYSQL_PASSWORD="$MYSQL_PASSWORD" \
+    -e MYSQL_HOST="$MYSQL_HOST" \
+    -e MYSQL_DATABASE="$MYSQL_DATABASE" \
     timbot:timbot
