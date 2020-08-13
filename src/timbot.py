@@ -175,10 +175,11 @@ if __name__ == '__main__':
 
     # connect to database
     try:
-        conn = mysql.connector.connect(user=os.environ['SQL_USER'],
-                                       password=os.environ['SQL_PASSWORD'],
-                                       host=os.environ['SQL_HOST'],
-                                       database=os.environ['SQL_DATABASE'])
+        conn = mysql.connector.connect(user=os.environ['MYSQL_USER'],
+                                       password=os.environ['MYSQL_PASSWORD'],
+                                       host=os.environ['MYSQL_HOST'],
+                                       database=os.environ['MYSQL_DATABASE'])
+        print("Established a connection to the MYSQL database instance")
     except (KeyError, mysql.connector.Error) as e:
         print("Encountered an error: {}".format(e))
         sys.exit(1)

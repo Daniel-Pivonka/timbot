@@ -25,10 +25,10 @@ And appropriately set the following environment variables:
 
 To use the database, you'll have to set the following environment variables as well:
 
-- `$SQL_HOST`: your MySQL host
-- `$SQL_USER`: your MySQL user
-- `$SQL_PASSWORD`: your MySQL password
-- `$SQL_DATABASE`: your MySQL database
+- `$MYSQL_HOST`: your MySQL host
+- `$MYSQL_USER`: your MySQL user
+- `$MYSQL_PASSWORD`: your MySQL password
+- `$MYSQL_DATABASE`: your MySQL database
 
 ### Local Run without Containers
 
