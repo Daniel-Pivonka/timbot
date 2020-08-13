@@ -32,7 +32,7 @@ def utc_to_est(utc_time):
 
 
 def send_message(text):
-    sc.api_call("chat.postMessage", channel=channel_name, text=text, as_user=use_authenticated_user)
+    sc.api_call("chat.postMessage", channel=channel_id, text=text, as_user=use_authenticated_user)
 
 
 def handle_ideal_lunch_time(curr_time):
@@ -55,7 +55,7 @@ def uploadimage(path, title, text):
     sc.api_call("files.sharedPublicURL", file=fileinfo['id'])
     image_url = fileinfo['permalink_public']
     attachments = [{"title": title, "image_url": image_url}]
-    response = sc.api_call("chat.postMessage", channel=channel_name, text=text, as_user=use_authenticated_user, attachments=attachments)
+    response = sc.api_call("chat.postMessage", channel=channel_id, text=text, as_user=use_authenticated_user, attachments=attachments)
 
 
 def choose_lunchcation():
@@ -90,7 +90,7 @@ def handle_timbot_message(message):
         else:
             image_url = 'http://cafe.epicureanfeast.com/Clients/8680redhat.jpg'
             attachments = [{"title": 'Menu', "image_url": image_url}]
-            sc.api_call("chat.postMessage", channel=channel_name, text='Heres the cafe menu', as_user=use_authenticated_user, attachments=attachments)
+            sc.api_call("chat.postMessage", channel=channel_id, text='Heres the cafe menu', as_user=use_authenticated_user, attachments=attachments)
             send_message("may I suggest the chicken sandwich")
 
     # increment weboploy win
@@ -119,7 +119,7 @@ def handle_timbot_message(message):
 
 
 def run_timbot():
-    history = sc.api_call("groups.history", channel=channel_name, count=1)
+    history = sc.api_call("groups.history", channel=channel_id, count=1)
 
     # handle ideal lunch time if it is a weekday
     if datetime.datetime.today().weekday() not in [saturday_index_elem, sunday_index_elem]:
@@ -163,7 +163,7 @@ def main():
 
 if __name__ == '__main__':
     slack_token = os.environ['SLACK_API_TOKEN']
-    channel_name = os.environ['SLACK_CHANNEL_NAME']
+    channel_id = os.environ['SLACK_CHANNEL_ID']
     timbot_user_id = os.environ['SLACK_TIMBOT_USER_ID'].lower()
     timbot_user_id_striped = timbot_user_id.strip('<@>')
     sc = SlackClient(slack_token)
