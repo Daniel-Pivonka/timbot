@@ -179,9 +179,8 @@ if __name__ == '__main__':
                                        password=os.environ['SQL_PASSWORD'],
                                        host=os.environ['SQL_HOST'],
                                        database=os.environ['SQL_DATABASE'])
-
-    except Exception as err:
-        print(err)
-        sys.exit()
+    except (KeyError, mysql.connector.Error) as e:
+        print("Encountered an error: {}".format(e))
+        sys.exit(1)
 
     main()
