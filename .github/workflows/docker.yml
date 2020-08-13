@@ -3,11 +3,22 @@ name: docker
 on: [pull_request, push]
 
 jobs:
-  build_docker_image:
+  build:
     runs-on: ubuntu-latest
     name: build
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2
-    - name: Build container image
-      run: docker build -f Dockerfile .
+    - name: Start the default mysql service
+      run: sudo systemctl start mysql.service
+    - name: Add the test schema.sql
+      run: |
+        set -ex
+
+        # remove the drop database call
+        tail -n +2 ./schema.sql > schema.tmp.sql
+        mysql -uroot -proot < ./schema.tmp.sql
+    - name: Ensure the MySQL container is healthy
+      run: mysql -uroot -proot -e "select * from timbot.users;"
+    - name: Build the timbot container image
+      run: docker build -f Dockerfile -t timbot:timbot .
