@@ -23,7 +23,9 @@ And appropriately set the following environment variables:
 - `$SLACK_CHANNEL_ID`: the channel ID number.
 - `$SLACK_TIMBOT_USER_ID`: the timbot slack user ID.
 
-To use the database, you'll have to set the following environment variables as well:
+#### Database
+
+Timbot uses a MySQL database as part of our advanced integration with the popular [webopoly](https://www.webopoly.org/) online board game. The database is used to store users that Timbot wishes to track as well as the number of "wins" each user has achieved in this timeless game of wits. To use the database, you will need to setup a MySQL instance using the provided `schema.sql` file. You will also have to set the following environment variables so that Timbot may interact with this MySQL instance:
 
 - `$MYSQL_HOST`: your MySQL host
 - `$MYSQL_USER`: your MySQL user
