@@ -15,5 +15,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
+src.egg-info/
+
 # timbot specific ignores
 dev-local-env
