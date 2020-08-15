@@ -5,7 +5,7 @@ import time
 import random
 import datetime
 import numpy as np
-import database as db
+from src import database as db
 import mysql.connector
 from slackclient import SlackClient
 
@@ -20,7 +20,7 @@ help_text = '''
     `where lunch no feast`: i tell you where to eat lunch that isn't epicurean feast
     `when lunch/lunch time`: i tell you when to eat lunch
     `what lunch/what eat`: i tell you what to eat
-    `increment weboploy win <name>`: more glory to whoever <name> is
+    `increment webopoly win <name>`: more glory to whoever <name> is
     `show webopoly standings`: show who is captalist king and who is poor
     `help`: this
 '''
@@ -83,7 +83,7 @@ def handle_timbot_message(message):
         uploadimage('images/lunchchart.png', 'IdealLunchTimeChart', '')
 
     # what to eat
-    elif ('what' in message) and ('eat' or 'lunch' in message):
+    elif ('what' in message) and ('eat' in message or 'lunch' in message):
         # if friday
         if datetime.datetime.today().weekday() == friday_index_elem:
             send_message('Its friday enjoy a meal out. Maybe some french toast at pauls?')
@@ -94,10 +94,10 @@ def handle_timbot_message(message):
             send_message("may I suggest the chicken sandwich")
 
     # increment weboploy win
-    elif 'increment weboploy win' in message:
+    elif 'increment webopoly win' in message:
         name = message.split()[-1]
         try:
-            db.increment_weboploy_wins(conn, name)
+            db.increment_webopoly_wins(conn, name)
         except Exception as e:
             send_message("Couldn't do it cause {}".format(e))
 
@@ -136,12 +136,12 @@ def run_timbot():
         if 'text' not in data or 'user' not in data:
             continue
 
-        sender = data['user'].encode('UTF8').lower()
-        if sender == timbot_user_id_striped:
+        sender = data['user'].encode('UTF8').lower().decode()
+        if sender == timbot_user_id_stripped:
             print('[DEBUG] last message was from the timbot_user_id, continuing to next loop iteration')
             continue
 
-        message = data['text'].encode('UTF8').lower()
+        message = data['text'].encode('UTF8').lower().decode()
 
         # openstack meme
         if 'openstack' in message:
@@ -165,7 +165,7 @@ if __name__ == '__main__':
     slack_token = os.environ['SLACK_API_TOKEN']
     channel_id = os.environ['SLACK_CHANNEL_ID']
     timbot_user_id = os.environ['SLACK_TIMBOT_USER_ID'].lower()
-    timbot_user_id_striped = timbot_user_id.strip('<@>')
+    timbot_user_id_stripped = timbot_user_id.strip('<@>')
     sc = SlackClient(slack_token)
 
     use_authenticated_user = True

@@ -6,7 +6,7 @@ def get_webopoly_standings(conn):
     return standings
 
 
-def increment_weboploy_wins(conn, name):
+def increment_webopoly_wins(conn, name):
     cursor = conn.cursor()
     uid = int(cursor.execute('SELECT uid FROM users WHERE name = "{}"'.format(name)))
     wins = int(cursor.execute('SELECT wins FROM webopoly WHERE uid = {}'.format(uid)))
