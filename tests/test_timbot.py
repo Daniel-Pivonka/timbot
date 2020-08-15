@@ -225,6 +225,9 @@ class TestTimbot:
         # make it ideal lunch time
         timbot.ideal_lunch_time = datetime.datetime.now().strftime('%H:%M')
 
+        # set alert to True (means ideal lunch time message hasn't been sent)
+        timbot.handle_ideal_lunch_time.alert = True
+
         with pytest.raises(Exception) as e:
             timbot.run_timbot()
         assert str(e.value) in ["IT IS THE IDEAL LUNCH TIME GO TO LUNCH"]
