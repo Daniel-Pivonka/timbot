@@ -66,6 +66,15 @@ def choose_lunchcation():
 
 
 def handle_timbot_message(message):
+    '''
+    handle_timbot_message is the driver function
+    responsible for determining what message handler to call
+    based on the value of the @message slack message.
+    '''
+    if 'help' in message:
+        send_message(help_text)
+        return None
+
     # where to go to lunch
     if 'lunch' in message and 'where' in message:
         # if friday or "no feast" override included in message
@@ -73,36 +82,42 @@ def handle_timbot_message(message):
             random.seed(datetime.datetime.now())
             choice = choose_lunchcation()
             send_message(choice)
+            return None
+
         # mon-thur
-        else:
-            send_message('epicurean feast')
+        send_message('epicurean feast')
+        return None
 
     # what time is lunch
-    elif ('lunch' in message) and ('time' in message or 'when' in message):
+    if ('lunch' in message) and ('time' in message or 'when' in message):
         send_message(utc_to_est(ideal_lunch_time))
         uploadimage('images/lunchchart.png', 'IdealLunchTimeChart', '')
+        return None
 
     # what to eat
-    elif ('what' in message) and ('eat' in message or 'lunch' in message):
+    if ('what' in message) and ('eat' in message or 'lunch' in message):
         # if friday
         if datetime.datetime.today().weekday() == friday_index_elem:
             send_message('Its friday enjoy a meal out. Maybe some french toast at pauls?')
-        else:
-            image_url = 'http://cafe.epicureanfeast.com/Clients/8680redhat.jpg'
-            attachments = [{"title": 'Menu', "image_url": image_url}]
-            sc.api_call("chat.postMessage", channel=channel_id, text='Heres the cafe menu', as_user=use_authenticated_user, attachments=attachments)
-            send_message("may I suggest the chicken sandwich")
+            return None
+
+        image_url = 'http://cafe.epicureanfeast.com/Clients/8680redhat.jpg'
+        attachments = [{"title": 'Menu', "image_url": image_url}]
+        sc.api_call("chat.postMessage", channel=channel_id, text='Heres the cafe menu', as_user=use_authenticated_user, attachments=attachments)
+        send_message("may I suggest the chicken sandwich")
+        return None
 
     # increment weboploy win
-    elif 'increment webopoly win' in message:
+    if 'increment webopoly win' in message:
         name = message.split()[-1]
         try:
             db.increment_webopoly_wins(conn, name)
         except Exception as e:
             send_message("Couldn't do it cause {}".format(e))
+        return None
 
     # webopoly standings
-    elif 'show webopoly standings' in message:
+    if 'show webopoly standings' in message:
         raw_standings = db.get_webopoly_standings(conn)
         standings = "{} is the reigning champ with {} wins".format(raw_standings[0][0], raw_standings[0][1])
         for record in raw_standings[1:-1]:
@@ -110,12 +125,9 @@ def handle_timbot_message(message):
         standings += "\nAnd in last is loser {} with {} wins".format(raw_standings[-1][0], raw_standings[-1][1])
         send_message(standings)
 
-    elif 'help' in message:
-        send_message(help_text)
-
     # base response
-    else:
-        send_message('keep pounding')
+    send_message('keep pounding')
+    return None
 
 
 def run_timbot():
