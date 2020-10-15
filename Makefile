@@ -23,3 +23,10 @@ stop:
 clean:
 	$(MAKE) stop-timbot
 	$(CONTAINER_BASE_CMD) rm $(TIMBOT_IMAGE_NAME)
+
+.PHONY: flake8
+flake8:
+	flake8 --ignore=E501 --exclude=Environment/* .src/*.py
+
+unit:
+	tox
