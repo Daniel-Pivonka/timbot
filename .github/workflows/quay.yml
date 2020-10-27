@@ -11,9 +11,10 @@ jobs:
   push:
     runs-on: ubuntu-latest
     env:
-      header: "Content-Type:application/json"
-      payload: "{\"commit\":\"${GITHUB_SHA}\",\"ref\":\"${GITHUB_REF}\",\"default_branch\":\"master\"}"
-      url: "${{ secrets.QUAY_WEBHOOK_URL }}"
+      PAYLOAD: "{\"commit\":\"${GITHUB_SHA}\",\"ref\":\"${GITHUB_REF}\",\"default_branch\":\"master\"}"
+      URL: ${{ secrets.QUAY_WEBHOOK_URL }}
     steps:
     - name: update container on quay.io
-      run: curl -H ${header} -d ${payload} ${url}
+      run: |
+        curl -H "Content-Type:application/json" "$URL"
+        # -d '${PAYLOAD}'
