@@ -1,11 +1,10 @@
 name: docker
 
-on: [pull_request, push]
+on: pull_request
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: build
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2
@@ -14,8 +13,6 @@ jobs:
     - name: Add the test schema.sql
       run: |
         set -ex
-
-        # remove the drop database call
         tail -n +2 ./schema.sql > schema.tmp.sql
         mysql -uroot -proot < ./schema.tmp.sql
     - name: Ensure the MySQL container is healthy
