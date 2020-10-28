@@ -15,5 +15,9 @@ jobs:
       payload: "{\"commit\":\"$GITHUB_SHA\",\"ref\":\"$GITHUB_REF\",\"default_branch\":\"master\"}"
       url: "${{ secrets.QUAY_WEBHOOK_URL }}"
     steps:
+    - name: debug
+      run: |
+        echo $header
+        echo $payload
     - name: update container on quay.io
       run: curl -H $header -d $payload $url
