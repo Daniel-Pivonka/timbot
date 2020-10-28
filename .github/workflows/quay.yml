@@ -1,11 +1,9 @@
 name: quay
 
-on: push
-
-# on:
-#   push:
-#     branches:
-#       - master
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   push:
@@ -15,9 +13,7 @@ jobs:
       payload: "{\"commit\":\"${{ github.sha }}\",\"ref\":\"${{ github.ref }}\",\"default_branch\":\"master\"}"
       url: "${{ secrets.QUAY_WEBHOOK_URL }}"
     steps:
-    - name: debug
+    - name: Update container on quay.io
       run: |
-        echo $header
-        echo $payload
-    - name: update container on quay.io
-      run: curl -H $header -d $payload $url
+        set -ue
+        curl -H $header -d $payload $url
