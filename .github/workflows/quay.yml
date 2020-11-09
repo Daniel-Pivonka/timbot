@@ -1,0 +1,19 @@
+name: quay
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    env:
+      header: "Content-Type:application/json"
+      payload: "{\"commit\":\"${{ github.sha }}\",\"ref\":\"${{ github.ref }}\",\"default_branch\":\"master\"}"
+      url: "${{ secrets.QUAY_WEBHOOK_URL }}"
+    steps:
+    - name: Update container on quay.io
+      run: |
+        set -ue
+        curl -H $header -d $payload $url

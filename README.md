@@ -2,6 +2,7 @@
 ![](https://github.com/Daniel-Pivonka/timbot/workflows/flake8/badge.svg)
 ![](https://github.com/Daniel-Pivonka/timbot/workflows/tox/badge.svg)
 ![](https://github.com/Daniel-Pivonka/timbot/workflows/docker/badge.svg)
+![](https://github.com/Daniel-Pivonka/timbot/workflows/quay/badge.svg)
 
 A Slack "bot" to replace our dear friend Tim
 
