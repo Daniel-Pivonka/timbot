@@ -94,14 +94,14 @@ class TestTimbot:
                                              "@timbot when lunch"}]})
         with pytest.raises(Exception) as e:
             timbot.run_timbot()
-        assert str(e.value) in [timbot.utc_to_est("15:30")]
+        assert str(e.value) in [timbot.utc_to_est("16:30")]
 
         timbot.sc = FakeSlackClient(lambda: {"messages": [{"user": "me",
                                                            "text":
                                              "@timbot lunch time"}]})
         with pytest.raises(Exception) as e:
             timbot.run_timbot()
-        assert str(e.value) in [timbot.utc_to_est("15:30")]
+        assert str(e.value) in [timbot.utc_to_est("16:30")]
 
     patch("timbot.send_message")
 

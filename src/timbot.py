@@ -10,7 +10,7 @@ import mysql.connector
 from slackclient import SlackClient
 
 
-ideal_lunch_time = "15:30"
+ideal_lunch_time = "16:30"
 friday_index_elem = 4
 saturday_index_elem = 5
 sunday_index_elem = 6
