@@ -157,7 +157,7 @@ def run_timbot():
 
         # openstack meme
         if 'openstack' in message:
-            send_message('i hear openstack is a career killer')
+            send_message('i hear openstack and ceph are career killers')
 
         # pong response
         if 'pong' in message:

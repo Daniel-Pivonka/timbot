@@ -30,7 +30,7 @@ class TestTimbot:
         timbot.send_message = lambda arg: (_ for _ in ()).throw(Exception(arg))
         with pytest.raises(Exception) as e:
             timbot.run_timbot()
-        assert str(e.value) in ["i hear openstack is a career killer"]
+        assert str(e.value) in ["i hear openstack and cephadm are career killers"]
 
     patch("timbot.send_message")
 
