@@ -3,7 +3,15 @@ name: docker
 on: pull_request
 
 jobs:
-  build:
+  build-codeowners:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2
+    - name: Build the codeowners container image
+      run: docker build -f Dockerfile.codeowners -t timbot:codeowners .
+
+  build-mysql:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repo
