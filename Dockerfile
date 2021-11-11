@@ -1,4 +1,4 @@
-FROM python:2
+FROM go:2
 
 USER root
 
@@ -9,4 +9,4 @@ COPY . /tmp/
 COPY src /src
 COPY images /images
 
-CMD [ "python", "./src/timbot.py" ]
+CMD [ "go", "./src/timbot.go" ]
